@@ -11,4 +11,4 @@
 *.pcd
 .idea
 /outputs
-mind_env
+.venv_new

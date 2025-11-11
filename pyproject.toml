@@ -1,0 +1,156 @@
+[project]
+name = "mind-marc"
+version = "1.0.0"
+description = "MIND and MARC multi-modal trajectory planning frameworks"
+authors = [
+    {name = "MIND-MARC Team", email = "team@example.com"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+keywords = ["autonomous driving", "trajectory planning", "risk-aware planning", "multi-modal"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+dependencies = [
+    "numpy>=1.21.0",
+    "scipy>=1.10.0",
+    "matplotlib>=3.5.0",
+    "torch>=2.0.0",
+    "pandas>=2.0.0",
+    "pyarrow>=18.0.0",
+    "shapely>=2.0.0",
+    "pyproj>=3.7.0",
+    "tqdm>=4.60.0",
+    "cvxpy>=1.3.0",
+    "rich>=13.0.0",
+    "colorlog>=6.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.10.0",
+    "flake8>=5.0.0",
+    "mypy>=1.0.0"
+]
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-xdist>=3.0.0"
+]
+viz = [
+    "matplotlib>=3.5.0",
+    "seaborn>=0.11.0",
+    "plotly>=5.0.0"
+]
+all = [
+    "mind-marc[dev,test,viz]"
+]
+
+[project.urls]
+Homepage = "https://github.com/example/mind-marc"
+Repository = "https://github.com/example/mind-marc"
+Documentation = "https://mind-marc.readthedocs.io"
+"Bug Tracker" = "https://github.com/example/mind-marc/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["tree_marc", "planners", "common"]
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 100
+known_first_party = ["tree_marc", "planners", "common"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "cvxpy.*",
+    "torch.*",
+    "scipy.*",
+    "matplotlib.*",
+    "shapely.*",
+    "pyproj.*"
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = [
+    "tree_marc/tests",
+    "tests"
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests"
+]
+
+[tool.coverage.run]
+source = ["tree_marc"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "setup.py"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:"]
