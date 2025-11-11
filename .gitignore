@@ -11,3 +11,4 @@
 *.pcd
 .idea
 /outputs
+mind_env
